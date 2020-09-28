@@ -1,6 +1,6 @@
 {
   "name": "@uxtweak/adonis-websocket-packet",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Verify,create adonis websocket packets",
   "main": "dist/wsp.node.js",
   "browser": "dist/wsp.browser.js",
@@ -55,6 +55,9 @@
   "dependencies": {},
   "directories": {
     "test": "test"
+  },
+  "publishConfig": {
+    "registry": "https://verdaccio.uxt"
   },
   "repository": {
     "type": "git",
