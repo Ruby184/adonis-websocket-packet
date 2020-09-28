@@ -469,7 +469,10 @@ fns.ackErrorPacket = function (topic, id, error) {
   return makePacket(codes.ACK_ERROR, {
     topic,
     id,
-    error: Object.assign(serializeError(error), { stack: isDev ? error.stack : null })
+    error: Object.assign(
+      serializeError(error),
+      { status: error.status || 500, stack: isDev ? error.stack : null }
+    )
   }, ['topic'])
 }
 

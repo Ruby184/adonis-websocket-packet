@@ -725,11 +725,11 @@ fns.ackPacket = function (topic, id) {
 fns.ackErrorPacket = function (topic, id, error) {
   var isDev = process.env.NODE_ENV && /dev/i.test(process.env.NODE_ENV);
 
-  return makePacket(codes.ACK_ERROR, Object.assign(serializeError_2(error), {
+  return makePacket(codes.ACK_ERROR, {
     topic: topic,
     id: id,
-    stack: isDev ? error.stack : undefined
-  }), ['topic', 'message'], ['name', 'code', 'stack']);
+    error: Object.assign(serializeError_2(error), { stack: isDev ? error.stack : null })
+  }, ['topic']);
 };
 
 var index = Object.assign({ codes: codes }, fns);
