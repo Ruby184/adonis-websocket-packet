@@ -1,5 +1,7 @@
 'use strict'
 
+import { serializeError, deserializeError } from 'serialize-error'
+
 /**
  * adonis-websocket-packet
  *
@@ -96,7 +98,7 @@ function makePacket (code, props, requiredProps, optionalProps = []) {
 /**
  * Fns to be exported
  */
-const fns = {}
+const fns = { deserializeError }
 
 /**
  * Validates if packet code is a `JOIN` code.
@@ -454,15 +456,24 @@ fns.ackPacket = function (topic, id, data = '') {
  *
  * @param  {String}   topic
  * @param  {Number}   id
- * @param  {String}   message
+ * @param  {Error}   error
  *
  * @return {Object}
  *
  * @throws {Error} If topic is not defined or not a string
  * @throws {Error} If message is not defined or not a string
  */
-fns.ackErrorPacket = function (topic, id, message) {
-  return makePacket(codes.ACK_ERROR, { topic, id, message }, ['topic', 'message'])
+fns.ackErrorPacket = function (topic, id, error) {
+  const isDev = process.env.NODE_ENV && /dev/i.test(process.env.NODE_ENV)
+
+  return makePacket(codes.ACK_ERROR, Object.assign(
+    serializeError(error),
+    {
+      topic,
+      id,
+      stack: isDev ? error.stack : undefined
+    }
+  ), ['topic', 'message'], ['name', 'code', 'stack'])
 }
 
 export default Object.assign({ codes }, fns)

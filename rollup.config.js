@@ -1,5 +1,5 @@
 import pkg from './package.json'
-import uglify from 'rollup-plugin-uglify'
+import { uglify } from 'rollup-plugin-uglify'
 const plugins = require('./rollup.plugins.js')
 
 export default [
@@ -7,7 +7,8 @@ export default [
     input: 'index.js',
     output: {
       file: pkg.main,
-      format: 'cjs'
+      format: 'cjs',
+      exports: 'default'
     },
     plugins
   },
