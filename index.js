@@ -466,14 +466,11 @@ fns.ackPacket = function (topic, id, data = '') {
 fns.ackErrorPacket = function (topic, id, error) {
   const isDev = process.env.NODE_ENV && /dev/i.test(process.env.NODE_ENV)
 
-  return makePacket(codes.ACK_ERROR, Object.assign(
-    serializeError(error),
-    {
-      topic,
-      id,
-      stack: isDev ? error.stack : undefined
-    }
-  ), ['topic', 'message'], ['name', 'code', 'stack'])
+  return makePacket(codes.ACK_ERROR, {
+    topic,
+    id,
+    error: Object.assign(serializeError(error), { stack: isDev ? error.stack : null })
+  }, ['topic'])
 }
 
 export default Object.assign({ codes }, fns)
